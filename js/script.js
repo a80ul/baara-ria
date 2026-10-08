@@ -28,7 +28,7 @@
   if (document.readyState === 'complete') tryHide();
 
   var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
-  var links = Array.prototype.slice.call(document.querySelectorAll('.pagenav a, .sidenav a'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('#sidenav a'));
   var count = document.getElementById('count');
   var sideCount = document.getElementById('sideCount');
   var bar = document.getElementById('progress');
@@ -43,6 +43,37 @@
   var popCancel = document.getElementById('popCancel');
   var popGo = document.getElementById('popGo');
   var dlOpener = null;
+  var burger = document.getElementById('burger');
+  var side = document.getElementById('side');
+  var sideX = document.getElementById('sideX');
+  var drawerBack = document.getElementById('drawerBack');
+  var drawerOpener = null;
+
+  // drawer navigasi samping untuk HP
+  function openDrawer() {
+    drawerOpener = document.activeElement;
+    side.classList.add('open');
+    drawerBack.hidden = false;
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    sideX.focus();
+  }
+  function closeDrawer() {
+    side.classList.remove('open');
+    drawerBack.hidden = true;
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (drawerOpener && drawerOpener.focus) drawerOpener.focus();
+  }
+  burger.addEventListener('click', function () {
+    if (side.classList.contains('open')) closeDrawer();
+    else openDrawer();
+  });
+  sideX.addEventListener('click', closeDrawer);
+  drawerBack.addEventListener('click', closeDrawer);
+  Array.prototype.forEach.call(side.querySelectorAll('.sidenav a'), function (a) {
+    a.addEventListener('click', closeDrawer);
+  });
   var current = 0;
   var lastFocus = null;
 
@@ -116,7 +147,7 @@
         var label = (i + 1) + ' / ' + pages.length;
         if (count) count.textContent = label;
         if (sideCount) sideCount.textContent = label;
-        links.forEach(function (a, k) { a.classList.toggle('on', k % pages.length === i); });
+        links.forEach(function (a, k) { a.classList.toggle('on', k === i); });
       });
     }, { rootMargin: '-40% 0px -50% 0px' });
     pages.forEach(function (pg) { io.observe(pg); });
@@ -184,6 +215,7 @@
   lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
   document.addEventListener('keydown', function (e) {
     if (!pop.hidden && e.key === 'Escape') { closePop(); return; }
+    if (side.classList.contains('open') && e.key === 'Escape') { closeDrawer(); return; }
     if (lb.hidden) return;
     if (e.key === 'Escape') { close(); return; }
     if (e.key === 'ArrowLeft') { open(current - 1, document.activeElement); return; }

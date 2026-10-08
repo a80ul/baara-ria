@@ -35,31 +35,43 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .load-sub{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;letter-spacing:.08em;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){
   .loader{transition:none}
-  .load-art .wipe{animation:none;clip-path:inset(0 0 0 0)}
+  .loader .wipe{animation:none;clip-path:inset(0 0 0 0)}
+  .side{transition:none}
 }
 
 .progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:var(--maroon);z-index:99}
 
 /* Blok sticky HP: logo di atas, nav kategori di bawah */
 .sticky{position:sticky;top:0;z-index:50;background:rgba(246,239,227,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:720px;margin:0 auto;padding:12px 16px 6px}
-.brand{line-height:0}
+.top{position:relative;display:flex;align-items:center;gap:12px;max-width:720px;margin:0 auto;padding:12px 16px}
+.burger{display:inline-grid;place-items:center;align-content:center;width:44px;height:44px;flex-shrink:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);cursor:pointer}
+.burger span{display:block;width:18px;height:2px;background:var(--maroon);margin:2px 0;border-radius:2px}
+.brand{line-height:0;position:absolute;left:50%;transform:translateX(-50%)}
 .brand-logo{display:inline-flex;background:var(--maroon);border-radius:12px;padding:9px 16px}
 .brand-logo img{display:block;height:30px;width:auto}
-.count{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;background:var(--price);color:var(--price-ink);padding:7px 13px;border-radius:999px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pagenav{display:flex;gap:8px;overflow-x:auto;max-width:720px;margin:0 auto;padding:6px 16px 12px;scrollbar-width:none}
-.pagenav::-webkit-scrollbar{display:none}
-.pagenav a{flex-shrink:0;display:inline-flex;align-items:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;text-decoration:none;color:#6a5340;background:var(--paper);border:1px solid var(--line);padding:8px 14px 8px 8px;border-radius:999px;min-height:44px}
-.pagenav a b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:#eadfca;color:var(--maroon);font-size:11px;margin-right:7px}
-.pagenav a.on{background:var(--maroon);border-color:var(--maroon);color:#fff}
-.pagenav a.on b{background:rgba(255,255,255,.24);color:#fff}
-
-/* Sidebar khusus PC */
-.side{display:none}
+.count{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;background:var(--price);color:var(--price-ink);padding:7px 13px;border-radius:999px;font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:auto}
+/* Sidebar: drawer geser di HP, panel tetap di PC */
+.side{display:flex;position:fixed;left:0;top:0;bottom:0;width:min(300px,84vw);z-index:120;flex-direction:column;gap:14px;padding:24px 22px;background:linear-gradient(180deg,var(--maroon) 0%,var(--maroon-deep) 100%);color:#f7eddf;transform:translateX(-105%);transition:transform .28s ease;overflow-y:auto}
+.side.open{transform:none}
+.side-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(247,237,223,.16);color:#f7eddf;font-size:22px;cursor:pointer}
+.drawer-back{position:fixed;inset:0;z-index:110;background:rgba(15,9,6,.55)}
+.drawer-back[hidden]{display:none}
+.side-logo{display:inline-block;line-height:0}
+.side-logo img{display:block;width:100%;max-width:210px;height:auto}
+.side-tag{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e8cfae}
+.sidenav{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.sidenav a{display:flex;align-items:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:700;text-decoration:none;color:#f7eddf;padding:10px 12px;border-radius:12px;min-height:44px}
+.sidenav a b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:rgba(247,237,223,.18);color:#f7eddf;font-size:11px;margin-right:10px}
+.sidenav a:hover{background:rgba(247,237,223,.12)}
+.sidenav a.on{background:#f7eddf;color:var(--maroon-deep)}
+.sidenav a.on b{background:var(--maroon);color:#fff}
 @media(min-width:1024px){
   body{padding-left:276px}
   .sticky{display:none}
-  .side{display:flex;position:fixed;left:0;top:0;bottom:0;width:276px;z-index:60;flex-direction:column;gap:14px;padding:30px 24px;background:linear-gradient(180deg,var(--maroon) 0%,var(--maroon-deep) 100%);color:#f7eddf}
+  .burger{display:none}
+  .side{width:276px;transform:none;transition:none;padding:30px 24px;z-index:60}
+  .side-x{display:none}
+  .drawer-back{display:none}
   .side-logo{display:inline-block;line-height:0}
   .side-logo img{display:block;width:100%;max-width:210px;height:auto}
   .side-tag{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e8cfae}
