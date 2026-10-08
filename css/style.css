@@ -1,0 +1,119 @@
+/* Arah: kertas krem dan marun dari brosur. Book Antiqua untuk nama brand, sans hanya label UI. */
+/* Warna: krem dan marun milik brand, hitam untuk label harga seperti blok harga brosur. */
+/* Layout: satu kolom 720px di HP; di PC sidebar marun kiri + konten kanan. */
+/* Bayangan: hanya di kartu halaman sebagai tanda kertas terangkat. */
+/* Loader: SVG steak putih tersapu jadi marun, satu-kali sebagai momen brand. */
+:root{
+  --cream:#f6efe3;
+  --paper:#fffdf7;
+  --ink:#2a1d12;
+  --muted:#5f4632;
+  --maroon:#8c1b1e;
+  --maroon-deep:#5f1113;
+  --line:#e5d6bc;
+  --price:#14100c;
+  --price-ink:#ffeecb;
+  --brand-font:"Book Antiqua","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.5;-webkit-tap-highlight-color:transparent}
+/* Motif latar: ikon steak brand diulang sebagai watermark krem yang samar */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:url("../iconsvg.svg");background-size:150px auto;opacity:.06}
+.doc{position:relative;z-index:1}
+:focus-visible{outline:3px solid var(--maroon);outline-offset:2px}
+
+/* Loading page */
+.loader{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;transition:opacity .45s ease,visibility 0s linear .45s}
+.loader.done{opacity:0;visibility:hidden}
+.load-art{position:relative;width:min(230px,62vw)}
+.load-art img{display:block;width:100%;height:auto}
+.art-base{filter:brightness(0) invert(1) drop-shadow(0 3px 8px rgba(42,29,18,.25))}
+.load-art .wipe{position:absolute;inset:0;clip-path:inset(0 100% 0 0);animation:wipe 1.1s ease .2s forwards}
+@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
+.load-brand{font-family:var(--brand-font);font-size:32px;color:var(--maroon);line-height:1.1}
+.load-sub{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;letter-spacing:.08em;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){
+  .loader{transition:none}
+  .load-art .wipe{animation:none;clip-path:inset(0 0 0 0)}
+}
+
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:var(--maroon);z-index:99}
+
+/* Blok sticky HP: logo di atas, nav kategori di bawah */
+.sticky{position:sticky;top:0;z-index:50;background:rgba(246,239,227,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:720px;margin:0 auto;padding:12px 16px 6px}
+.brand{line-height:0}
+.brand-logo{display:inline-flex;background:var(--maroon);border-radius:12px;padding:9px 16px}
+.brand-logo img{display:block;height:30px;width:auto}
+.count{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;background:var(--price);color:var(--price-ink);padding:7px 13px;border-radius:999px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pagenav{display:flex;gap:8px;overflow-x:auto;max-width:720px;margin:0 auto;padding:6px 16px 12px;scrollbar-width:none}
+.pagenav::-webkit-scrollbar{display:none}
+.pagenav a{flex-shrink:0;display:inline-flex;align-items:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;text-decoration:none;color:#6a5340;background:var(--paper);border:1px solid var(--line);padding:8px 14px 8px 8px;border-radius:999px;min-height:44px}
+.pagenav a b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:#eadfca;color:var(--maroon);font-size:11px;margin-right:7px}
+.pagenav a.on{background:var(--maroon);border-color:var(--maroon);color:#fff}
+.pagenav a.on b{background:rgba(255,255,255,.24);color:#fff}
+
+/* Sidebar khusus PC */
+.side{display:none}
+@media(min-width:1024px){
+  body{padding-left:276px}
+  .sticky{display:none}
+  .side{display:flex;position:fixed;left:0;top:0;bottom:0;width:276px;z-index:60;flex-direction:column;gap:14px;padding:30px 24px;background:linear-gradient(180deg,var(--maroon) 0%,var(--maroon-deep) 100%);color:#f7eddf}
+  .side-logo{display:inline-block;line-height:0}
+  .side-logo img{display:block;width:100%;max-width:210px;height:auto}
+  .side-tag{font-family:ui-sans-serif,system-ui,sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#e8cfae}
+  .sidenav{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .sidenav a{display:flex;align-items:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:700;text-decoration:none;color:#f7eddf;padding:10px 12px;border-radius:12px;min-height:44px}
+  .sidenav a b{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:999px;background:rgba(247,237,223,.18);color:#f7eddf;font-size:11px;margin-right:10px}
+  .sidenav a:hover{background:rgba(247,237,223,.12)}
+  .sidenav a.on{background:#f7eddf;color:var(--maroon-deep)}
+  .sidenav a.on b{background:var(--maroon);color:#fff}
+  .side-count{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:#e8cfae}
+  .side-bottom{margin-top:auto;display:grid;gap:10px}
+  .dl-btn{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:700;min-height:44px;width:100%;padding:10px 18px;border-radius:12px;border:1px solid rgba(247,237,223,.35);background:transparent;color:#f7eddf;cursor:pointer}
+  .dl-btn:hover{background:rgba(247,237,223,.12)}
+  .dl-btn.light{background:var(--maroon);border-color:var(--maroon);color:#fff}
+  .dl-btn.light:hover{background:var(--maroon-deep)}
+}
+
+.doc{max-width:720px;margin:0 auto;padding:26px 16px 60px}
+.intro{text-align:center;margin:8px 0 20px}
+.intro h1{font-family:var(--brand-font);font-size:clamp(32px,6vw,44px);color:var(--maroon);font-weight:400}
+.page{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px;margin-bottom:16px;box-shadow:0 14px 34px rgba(42,29,18,.1)}
+.page figcaption{display:flex;align-items:center;gap:8px;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;font-weight:700;color:#6a5340;padding:2px 4px 10px}
+.page figcaption span{background:var(--price);color:var(--price-ink);font-size:11px;padding:3px 10px;border-radius:999px;letter-spacing:.06em}
+.page img{width:100%;height:auto;display:block;border-radius:12px;cursor:zoom-in;background:#efe4d0}
+.ph{font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--muted);text-align:center;background:#e9dcc2;border-radius:12px;padding:44px 12px;margin-bottom:10px}
+.err{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;color:var(--ink);text-align:center;background:#f3e4dc;border:1px solid #d9a9a0;border-radius:12px;padding:22px 14px;margin-bottom:10px;display:grid;gap:10px;justify-items:center}
+.err button{font:inherit;font-weight:700;min-height:44px;padding:10px 22px;border-radius:999px;border:0;background:var(--maroon);color:#fff;cursor:pointer}
+.empty{font-family:ui-sans-serif,system-ui,sans-serif;text-align:center;color:var(--muted);padding:32px 16px}
+.foot{text-align:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;color:var(--muted);margin-top:22px;display:grid;gap:10px}
+.foot a{color:var(--maroon);font-weight:700}
+/* Popup pindah halaman */
+.pop-back{position:fixed;inset:0;z-index:150;background:rgba(15,9,6,.6)}
+.pop-back[hidden]{display:none}
+.pop{position:fixed;z-index:151;left:50%;top:50%;transform:translate(-50%,-50%);width:min(360px,90vw);background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center}
+.pop[hidden]{display:none}
+.pop h3{font-family:var(--brand-font);font-weight:400;font-size:22px;color:var(--maroon)}
+.pop p{font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;color:#4a382a;margin:8px 0 16px}
+.pop-act{display:flex;gap:8px}
+.pop-act button{flex:1;font-family:ui-sans-serif,system-ui,sans-serif;font-size:14px;font-weight:700;min-height:44px;border-radius:12px;cursor:pointer}
+#popCancel{background:transparent;border:1px solid var(--line);color:var(--ink)}
+#popGo{background:var(--maroon);border:1px solid var(--maroon);color:#fff}
+/* Kolom sosmed kanan bawah */
+.social{position:fixed;right:12px;bottom:16px;z-index:45;display:flex;flex-direction:column;gap:8px}
+.social a{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--maroon);color:#f7eddf;box-shadow:0 8px 20px rgba(42,29,18,.3)}
+.social a:hover{background:var(--maroon-deep)}
+.social svg{display:block;width:20px;height:20px;fill:currentColor}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(15,9,6,.94);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px}
+.lb[hidden]{display:none}
+.lb img{max-width:min(920px,94vw);max-height:78vh;border-radius:12px;object-fit:contain;background:#000}
+.lb-cap{color:#e8d9bd;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;margin-top:10px}
+.lb-err{color:#ffd9d2;font-family:ui-sans-serif,system-ui,sans-serif;font-size:13px;margin-top:8px}
+.lb-retry{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:700;min-height:44px;margin-top:8px;padding:10px 22px;border-radius:999px;border:0;background:#fff;color:#14100c;cursor:pointer}
+.lb-x{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;font-size:24px;cursor:pointer}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:26px;cursor:pointer}
+.lb-prev{left:10px}.lb-next{right:10px}
+@media(max-width:560px){.lb-prev,.lb-next{top:auto;bottom:96px;transform:none}}
